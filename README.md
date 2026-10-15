@@ -59,6 +59,28 @@ Jika Anda ingin deploy langsung lewat terminal tanpa GitHub Actions:
 
 ---
 
+## ❓ Solusi Masalah Umum Saat Deploy (Troubleshooting)
+
+### 1. Pesan: `Error: Dependencies lock file is not found...`
+- **Penyebab**: GitHub Actions mencari file `package-lock.json`.
+- **Solusi yang sudah diterapkan**:
+  - File `package-lock.json` sudah dibuat di repositori ini.
+  - File `.github/workflows/deploy.yml` sudah diperbarui agar menjalankan `npm install --legacy-peer-deps` tanpa mewajibkan file lock statis.
+  - Cukup lakukan `git add .`, `git commit -m "update deploy config"`, dan `git push` ke GitHub Anda.
+
+### 2. Tampilan Website Online Blank / Kosong Putih
+- **Penyebab Utama**:
+  1. **Source GitHub Pages Salah Dipilih**: Jika di menu **Settings > Pages** Anda memilih *Deploy from a branch* -> branch `main` / root, GitHub Pages mencoba membuka file mentah `index.html` dengan `/src/main.tsx`. Browser tidak dapat membaca file `.tsx` secara langsung sehingga layar menjadi putih kosong.
+  2. **Build GitHub Actions Gagal**: Karena error dependencies di atas, proses deploy belum selesai sehingga website belum terisi.
+- **Solusi Cepat**:
+  - Buka repositori Anda di GitHub -> **Settings** -> **Pages**.
+  - Pada bagian **Build and deployment** -> **Source**, pilih **GitHub Actions** (jangan pilih *Deploy from a branch*).
+  - Buka tab **Actions** di bagian atas repositori, lalu jalankan workflow atau push perubahan terbaru.
+  - Setelah ada tanda centang hijau (✓), buka link GitHub Pages Anda. Website akan tampil sempurna!
+  - *Alternatif:* Jika ingin menggunakan opsi branch, jalankan `npm run deploy` di komputer lokal, lalu di GitHub Pages pilih branch **`gh-pages`** (bukan `main`).
+
+---
+
 ## 🎮 Fitur Game
 - **Pelacakan Tangan AR Real-Time**: Deteksi kepalan tangan & posisi ujung jari telunjuk menggunakan MediaPipe Hands.
 - **Mode 1 Pemain (Solo) & Mode 2 Pemain (Battle)**: Duel menangkap lebah bersama teman.
