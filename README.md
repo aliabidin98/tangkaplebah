@@ -40,16 +40,23 @@ File workflow `.github/workflows/deploy.yml` sudah disiapkan. Anda hanya perlu m
 
 ---
 
-### 🛠️ Opsi 2: Deploy Manual Menggunakan Script `npm run deploy`
+### 🛠️ Opsi 2: Deploy dari Branch Menggunakan Folder `/docs` (Sangat Mudah)
+Proyek ini sekarang secara otomatis menyertakan folder `/docs` berisi file siap pakai hasil build:
+1. Pastikan seluruh folder (termasuk folder `docs/`) sudah di-push ke GitHub.
+2. Di GitHub, buka menu **Settings** > **Pages**.
+3. Di bagian **Build and deployment** > **Source**, pilih **Deploy from a branch**.
+4. Di bagian **Branch**, pilih branch `main` (atau `master`), dan pilih folder **/docs** (bukan /root), lalu klik **Save**.
+5. Website akan langsung aktif dalam hitungan detik!
 
-Jika Anda ingin deploy langsung lewat terminal tanpa GitHub Actions:
+---
 
-1. Pastikan repositori lokal sudah terhubung dengan remote GitHub Anda.
-2. Jalankan perintah:
+### 💻 Opsi 3: Deploy Manual Menggunakan Script `npm run deploy`
+Jika Anda ingin deploy via terminal:
+1. Jalankan perintah:
    ```bash
    npm run deploy
    ```
-3. Buka GitHub -> **Settings** -> **Pages**, pada bagian **Branch**, pilih `gh-pages` lalu simpan (Save).
+2. Buka GitHub -> **Settings** -> **Pages**, pada bagian **Branch**, pilih `gh-pages` lalu simpan (Save).
 
 ---
 
@@ -59,25 +66,27 @@ Jika Anda ingin deploy langsung lewat terminal tanpa GitHub Actions:
 
 ---
 
-## ❓ Solusi Masalah Umum Saat Deploy (Troubleshooting)
+## ❓ Solusi Masalah: Tampilan Masih Blank Putih (Troubleshooting)
 
-### 1. Pesan: `Error: Dependencies lock file is not found...`
-- **Penyebab**: GitHub Actions mencari file `package-lock.json`.
-- **Solusi yang sudah diterapkan**:
-  - File `package-lock.json` sudah dibuat di repositori ini.
-  - File `.github/workflows/deploy.yml` sudah diperbarui agar menjalankan `npm install --legacy-peer-deps` tanpa mewajibkan file lock statis.
-  - Cukup lakukan `git add .`, `git commit -m "update deploy config"`, dan `git push` ke GitHub Anda.
+Jika tampilan website di GitHub Pages masih blank/putih, ada 2 kemungkinan penyebab:
 
-### 2. Tampilan Website Online Blank / Kosong Putih
-- **Penyebab Utama**:
-  1. **Source GitHub Pages Salah Dipilih**: Jika di menu **Settings > Pages** Anda memilih *Deploy from a branch* -> branch `main` / root, GitHub Pages mencoba membuka file mentah `index.html` dengan `/src/main.tsx`. Browser tidak dapat membaca file `.tsx` secara langsung sehingga layar menjadi putih kosong.
-  2. **Build GitHub Actions Gagal**: Karena error dependencies di atas, proses deploy belum selesai sehingga website belum terisi.
-- **Solusi Cepat**:
-  - Buka repositori Anda di GitHub -> **Settings** -> **Pages**.
-  - Pada bagian **Build and deployment** -> **Source**, pilih **GitHub Actions** (jangan pilih *Deploy from a branch*).
-  - Buka tab **Actions** di bagian atas repositori, lalu jalankan workflow atau push perubahan terbaru.
-  - Setelah ada tanda centang hijau (✓), buka link GitHub Pages Anda. Website akan tampil sempurna!
-  - *Alternatif:* Jika ingin menggunakan opsi branch, jalankan `npm run deploy` di komputer lokal, lalu di GitHub Pages pilih branch **`gh-pages`** (bukan `main`).
+### 1. Paling Sering: Pengaturan Source di GitHub Pages Masih Mengarah ke Root (`/root`)
+- **Mengapa Blank Putih?**
+  Folder root repositori berisi file kode sumber mentah (`index.html` dan `src/main.tsx`). Browser internet tidak bisa langsung membaca file TypeScript (`.tsx`) tanpa proses compile/build, sehingga halaman menjadi blank putih.
+- **Cara Mengatasinya (Pilih salah satu dari 2 cara termudah ini):**
+  - **Cara A (Rekomendasi Utama - Otomatis):**
+    1. Buka Repositori GitHub Anda > klik tab **Settings** di atas > klik menu **Pages** di sebelah kiri.
+    2. Pada bagian **Build and deployment** > **Source**, ubah dari *Deploy from a branch* menjadi **GitHub Actions**.
+    3. Buka tab **Actions** di atas repositori Anda. Anda akan melihat workflow *Deploy to GitHub Pages* berjalan (tunggu hingga centang hijau ✓).
+    4. Buka kembali tautan website Anda. Game akan langsung muncul!
+  - **Cara B (Jika Ingin Tetap Menggunakan Deploy from a branch):**
+    1. Buka Repositori GitHub Anda > **Settings** > **Pages**.
+    2. Pada bagian **Branch**, pastikan memilih branch `main` dan ganti foldernya menjadi **/docs** (bukan /root).
+    3. Klik **Save**. Tunggu 1 menit lalu refresh halaman website Anda.
+
+### 2. Cache Browser Lama
+- Kadang browser masih menyimpan halaman kosong sebelumnya di memori cache.
+- Tekan tombol **Ctrl + F5** (di Windows/Linux) atau **Cmd + Shift + R** (di Mac), atau coba buka tautan website di mode Penyamaran / *Incognito Window*.
 
 ---
 

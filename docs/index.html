@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Game AR Tangkap Lebah</title>
+    <meta name="description" content="Game edukasi AR tangkap lebah interaktif menggunakan kamera AI/tangan atau kursor. Dibuat oleh : M. Nur Ali Abidin, S.Pd." />
+    <meta property="og:title" content="Game AR Tangkap Lebah" />
+    <meta property="og:description" content="Game edukasi AR tangkap lebah interaktif menggunakan kamera AI/tangan atau kursor. Dibuat oleh : M. Nur Ali Abidin, S.Pd." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Dark Background Style to prevent white flash -->
+    <style>html,body{color:#f8fafc;background-color:#0f172a;width:100%;height:100%;margin:0;padding:0;font-family:Fredoka,Nunito,system-ui,-apple-system,sans-serif;overflow:hidden}</style>
+
+    <!-- GitHub Pages Trailing Slash Fix -->
+    <script>
+      if (window.location.pathname && !window.location.pathname.endsWith('/') && !window.location.pathname.split('/').pop().includes('.')) {
+        window.location.replace(window.location.pathname + '/' + window.location.search + window.location.hash);
+      }
+    </script>
+
+    <!-- Unbuilt / Static Error Guard -->
+    <script>
+      window.addEventListener('error', function(e) {
+        var root = document.getElementById('root');
+        if (root && (!root.innerHTML || root.innerHTML.trim() === '')) {
+          var isTSX = e.filename && (e.filename.includes('.tsx') || e.filename.includes('/src/'));
+          var isStatic = window.location.hostname.includes('github.io');
+          if (isTSX || isStatic) {
+            root.innerHTML = '<div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #0f172a; color: white; padding: 24px; text-align: center; font-family: sans-serif;">' +
+              '<div style="max-width: 520px; background: #1e293b; padding: 28px; border-radius: 20px; border: 1px solid #334155; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">' +
+              '<div style="font-size: 48px; margin-bottom: 12px;">🐝</div>' +
+              '<h2 style="font-size: 22px; font-weight: 800; margin-bottom: 10px; color: #fbbf24;">Game AR Tangkap Lebah</h2>' +
+              '<p style="font-size: 14px; color: #cbd5e1; line-height: 1.6; margin-bottom: 16px;">Jika Anda melihat pesan ini di GitHub Pages, artinya repositori Anda memerlukan pengaturan <b>GitHub Actions</b>.</p>' +
+              '<div style="background: #0f172a; padding: 14px; border-radius: 12px; text-align: left; font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 20px; border: 1px solid #334155;">' +
+              '<strong style="color: #38bdf8;">Panduan Mengaktifkan di GitHub:</strong><br>' +
+              '1. Buka Repositori GitHub &gt; tab <b>Settings</b> &gt; menu <b>Pages</b><br>' +
+              '2. Pada bagian <b>Build and deployment</b> &gt; <b>Source</b>, pilih <b>GitHub Actions</b><br>' +
+              '3. Buka tab <b>Actions</b> dan tunggu hingga workflow selesai hijau (✓)<br>' +
+              '4. <i>Atau jika menggunakan Deploy from a branch, pilih folder <b>/docs</b></i>' +
+              '</div>' +
+              '<button onclick="location.reload()" style="background: #f59e0b; color: #0f172a; border: none; padding: 12px 24px; font-weight: 800; font-size: 14px; border-radius: 10px; cursor: pointer;">🔄 Muat Ulang Halaman</button>' +
+              '</div></div>';
+          }
+        }
+      });
+    </script>
+    
+    <!-- MediaPipe Hands & Camera Utils (deferred to not block rendering) -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <script type="module" crossorigin src="./assets/index-kFIkL4gs.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-Bc1vpCDK.css">
+  </head>
+  <body class="bg-slate-900 text-slate-100 antialiased overflow-hidden select-none" style="background-color: #0f172a;">
+    <div id="root"></div>
+  </body>
+</html>
+

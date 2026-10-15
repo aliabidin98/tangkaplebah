@@ -450,16 +450,40 @@ export default function App() {
     });
   }, []);
 
-  // Helper to wait for MediaPipe Hands script from CDN
-  const waitForMediaPipe = async (timeoutMs = 4000): Promise<boolean> => {
+  // Helper to wait for MediaPipe Hands script from CDN with dynamic fallback
+  const waitForMediaPipe = async (timeoutMs = 6000): Promise<boolean> => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if ((window as any).Hands) return true;
+
+    // Dynamically inject if not in head
+    if (!document.querySelector('script[src*="hands.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js';
+      script.crossOrigin = 'anonymous';
+      document.head.appendChild(script);
+    }
+
     const start = Date.now();
     while (Date.now() - start < timeoutMs) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       if ((window as any).Hands) return true;
       await new Promise(r => setTimeout(r, 150));
     }
+
+    // Try unpkg fallback if jsdelivr timed out
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (!(window as any).Hands) {
+      await new Promise<void>((resolve) => {
+        const fallbackScript = document.createElement('script');
+        fallbackScript.src = 'https://unpkg.com/@mediapipe/hands/hands.js';
+        fallbackScript.crossOrigin = 'anonymous';
+        fallbackScript.onload = () => resolve();
+        fallbackScript.onerror = () => resolve();
+        document.head.appendChild(fallbackScript);
+        setTimeout(resolve, 3000);
+      });
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return !!(window as any).Hands;
   };
