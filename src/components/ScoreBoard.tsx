@@ -98,7 +98,7 @@ export const ScoreBoard: React.FC<ScoreBoardProps> = ({
           <div className="bg-slate-900/95 backdrop-blur-md rounded-3xl px-5 py-3 sm:px-8 sm:py-3.5 shadow-2xl border-b-4 border-amber-400 text-center border border-slate-700/80 transform hover:scale-[1.02] transition-transform w-full sm:w-auto">
             <div className="flex items-center justify-center gap-2 mb-0.5">
               <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-full border border-amber-400/20">
-                {categoryText || 'SOAL MATEMATIKA'}
+                {categoryText || 'SOAL'}
               </span>
             </div>
             <div className="text-2xl sm:text-4xl md:text-5xl font-black text-white font-heading tracking-wide drop-shadow-md">
