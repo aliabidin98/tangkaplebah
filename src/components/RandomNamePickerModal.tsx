@@ -589,10 +589,10 @@ export function RandomNamePickerModal({ isOpen, onClose }: RandomNamePickerModal
     <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 animate-fadeIn">
       <div className="bg-slate-900 border-2 border-amber-400/80 rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden relative">
         
-        {/* Modal Header */}
-        <div className="bg-gradient-to-r from-amber-600/30 via-slate-800 to-amber-600/30 border-b border-amber-400/30 p-4 sm:px-6 flex items-center justify-between">
+        {/* Modal Header (Fixed, Never Shrinks) */}
+        <div className="shrink-0 bg-gradient-to-r from-amber-600/30 via-slate-800 to-amber-600/30 border-b border-amber-400/30 p-4 sm:px-6 flex items-center justify-between z-20">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-2xl shadow-inner">
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-400 flex items-center justify-center text-2xl shadow-inner shrink-0">
               🎡
             </div>
             <div>
@@ -605,7 +605,7 @@ export function RandomNamePickerModal({ isOpen, onClose }: RandomNamePickerModal
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={onClose}
               className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
@@ -617,7 +617,7 @@ export function RandomNamePickerModal({ isOpen, onClose }: RandomNamePickerModal
         </div>
 
         {/* Modal Body */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
           
           {/* LEFT: Wheel Section (7 Cols on desktop) */}
           <div className="lg:col-span-7 flex flex-col items-center justify-center bg-slate-950/50 rounded-2xl p-4 border border-slate-800 relative">

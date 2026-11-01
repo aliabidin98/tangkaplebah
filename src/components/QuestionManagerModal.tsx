@@ -16,7 +16,8 @@ import {
   Trophy,
   Volume2,
   HelpCircle,
-  Sparkles
+  Sparkles,
+  Search
 } from 'lucide-react';
 import { Question, GameSettings } from '../types';
 import { 
@@ -69,6 +70,9 @@ export const QuestionManagerModal: React.FC<QuestionManagerModalProps> = ({
 
   // Toast / notification feedback
   const [toastMsg, setToastMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  // Search query filter for large question bank
+  const [searchQuery, setSearchQuery] = useState('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -227,15 +231,15 @@ export const QuestionManagerModal: React.FC<QuestionManagerModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-      <div className="bg-slate-900 border-2 border-amber-400/50 rounded-3xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+      <div className="bg-slate-900 border-2 border-amber-400/50 rounded-3xl w-full max-w-5xl h-[92vh] max-h-[94vh] flex flex-col shadow-2xl overflow-hidden">
         
-        {/* Header Bar */}
-        <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 px-6 py-4 flex items-center justify-between shadow-md">
+        {/* Header Bar (Fixed, Never Shrinks) */}
+        <div className="shrink-0 bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 px-5 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between shadow-md z-20">
           <div className="flex items-center gap-3">
             <span className="text-3xl">🐝</span>
             <div>
-              <h2 className="text-2xl font-black text-white font-heading tracking-wide">
+              <h2 className="text-xl sm:text-2xl font-black text-white font-heading tracking-wide">
                 Pengaturan Game & Bank Soal
               </h2>
               <p className="text-amber-100/90 text-xs sm:text-sm font-semibold">
@@ -245,67 +249,67 @@ export const QuestionManagerModal: React.FC<QuestionManagerModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-transform active:scale-95"
+            className="w-10 h-10 rounded-2xl bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-transform active:scale-95 shrink-0"
             title="Tutup Menu"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex border-b border-slate-800 bg-slate-950/60 px-6 pt-2 gap-2 overflow-x-auto">
+        {/* Tab Navigation Menu Bar (Fixed, Always Visible & Never Shrinks) */}
+        <div className="shrink-0 flex items-center border-b border-slate-800 bg-slate-950/90 px-4 sm:px-6 pt-2.5 gap-2 overflow-x-auto z-20 select-none scrollbar-thin">
           <button
             onClick={() => setActiveTab('questions')}
-            className={`py-3 px-4 font-bold text-sm rounded-t-xl transition-colors flex items-center gap-2 whitespace-nowrap ${
+            className={`shrink-0 py-2.5 sm:py-3 px-3.5 sm:px-4 font-bold text-xs sm:text-sm rounded-t-xl transition-all flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'questions'
-                ? 'bg-slate-900 text-amber-400 border-t-2 border-x-2 border-amber-400/60 border-b-transparent'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-slate-900 text-amber-400 border-t-2 border-x-2 border-amber-400/70 border-b-transparent shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/40'
             }`}
           >
-            <BookOpen className="w-4 h-4" />
-            Daftar Soal & Pilihan Ganda ({questions.length})
+            <BookOpen className="w-4 h-4 shrink-0" />
+            <span>Daftar Soal & Pilihan Ganda ({questions.length})</span>
           </button>
           
           <button
             onClick={() => setActiveTab('scores')}
-            className={`py-3 px-4 font-bold text-sm rounded-t-xl transition-colors flex items-center gap-2 whitespace-nowrap ${
+            className={`shrink-0 py-2.5 sm:py-3 px-3.5 sm:px-4 font-bold text-xs sm:text-sm rounded-t-xl transition-all flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'scores'
-                ? 'bg-slate-900 text-emerald-400 border-t-2 border-x-2 border-emerald-400/60 border-b-transparent'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-slate-900 text-emerald-400 border-t-2 border-x-2 border-emerald-400/70 border-b-transparent shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/40'
             }`}
           >
-            <Trophy className="w-4 h-4" />
-            Pengaturan Skor & Audio
+            <Trophy className="w-4 h-4 shrink-0" />
+            <span>Pengaturan Skor & Audio</span>
           </button>
 
           <button
             onClick={() => setActiveTab('settings')}
-            className={`py-3 px-4 font-bold text-sm rounded-t-xl transition-colors flex items-center gap-2 whitespace-nowrap ${
+            className={`shrink-0 py-2.5 sm:py-3 px-3.5 sm:px-4 font-bold text-xs sm:text-sm rounded-t-xl transition-all flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'settings'
-                ? 'bg-slate-900 text-sky-400 border-t-2 border-x-2 border-sky-400/60 border-b-transparent'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-slate-900 text-sky-400 border-t-2 border-x-2 border-sky-400/70 border-b-transparent shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/40'
             }`}
           >
-            <Sliders className="w-4 h-4" />
-            Ukuran & Kecepatan Lebah
+            <Sliders className="w-4 h-4 shrink-0" />
+            <span>Ukuran & Kecepatan Lebah</span>
           </button>
 
           <button
             onClick={() => setActiveTab('import')}
-            className={`py-3 px-4 font-bold text-sm rounded-t-xl transition-colors flex items-center gap-2 whitespace-nowrap ${
+            className={`shrink-0 py-2.5 sm:py-3 px-3.5 sm:px-4 font-bold text-xs sm:text-sm rounded-t-xl transition-all flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'import'
-                ? 'bg-slate-900 text-purple-400 border-t-2 border-x-2 border-purple-400/60 border-b-transparent'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-slate-900 text-purple-400 border-t-2 border-x-2 border-purple-400/70 border-b-transparent shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/40'
             }`}
           >
-            <FileSpreadsheet className="w-4 h-4" />
-            Impor / Ekspor Excel
+            <FileSpreadsheet className="w-4 h-4 shrink-0" />
+            <span>Impor / Ekspor Excel</span>
           </button>
         </div>
 
         {/* Toast Alert */}
         {toastMsg && (
-          <div className={`mx-6 mt-3 px-4 py-2.5 rounded-xl text-sm font-bold flex items-center justify-between ${
+          <div className={`shrink-0 mx-4 sm:mx-6 mt-3 px-4 py-2.5 rounded-xl text-sm font-bold flex items-center justify-between ${
             toastMsg.type === 'success' 
               ? 'bg-emerald-950/90 border border-emerald-500 text-emerald-300' 
               : 'bg-rose-950/90 border border-rose-500 text-rose-300'
@@ -317,8 +321,8 @@ export const QuestionManagerModal: React.FC<QuestionManagerModalProps> = ({
           </div>
         )}
 
-        {/* Modal Content */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+        {/* Modal Content (Takes remaining space and scrolls smoothly without affecting Menu Bar) */}
+        <div className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6 space-y-6">
 
           {/* TAB 1: DAFTAR SOAL & PILIHAN GANDA */}
           {activeTab === 'questions' && (
@@ -388,156 +392,208 @@ export const QuestionManagerModal: React.FC<QuestionManagerModalProps> = ({
                 </form>
               </div>
 
-              {/* Table of Questions */}
+              {/* Question List Header Toolbar with Count & Search */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+                <div className="flex items-center gap-2.5">
+                  <span className="font-bold text-white text-sm">Daftar Soal Tersimpan</span>
+                  <span className="bg-amber-400/15 text-amber-300 font-mono text-xs font-bold px-2.5 py-0.5 rounded-full border border-amber-400/40">
+                    {questions.length} Soal
+                  </span>
+                  {searchQuery.trim() && (
+                    <span className="text-xs text-slate-400">
+                      (Hasil: {questions.filter(q => {
+                        const query = searchQuery.toLowerCase();
+                        return q.question.toLowerCase().includes(query) ||
+                          q.answer.toLowerCase().includes(query) ||
+                          q.options?.some(opt => opt.toLowerCase().includes(query));
+                      }).length})
+                    </span>
+                  )}
+                </div>
+
+                {questions.length > 2 && (
+                  <div className="relative w-full sm:w-64">
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      type="text"
+                      placeholder="Cari kata kunci soal..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full bg-slate-900 border border-slate-700 focus:border-amber-400 rounded-xl pl-9 pr-8 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none transition-colors"
+                    />
+                    {searchQuery && (
+                      <button
+                        onClick={() => setSearchQuery('')}
+                        className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                        title="Hapus pencarian"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Table of Questions with Sticky Header & Independent Scrolling */}
               <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-950/60 shadow-inner">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-slate-900 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">
-                      <th className="py-3 px-3 w-12 text-center">No</th>
-                      <th className="py-3 px-4">Pertanyaan</th>
-                      <th className="py-3 px-4">Kunci Jawaban</th>
-                      <th className="py-3 px-4">Pilihan Ganda (4 Lebah)</th>
-                      <th className="py-3 px-4 text-center w-28">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/80 text-sm">
-                    {questions.map((q, idx) => {
-                      const isEditing = editingId === q.id;
-                      const opts = q.options && q.options.length >= 4 
-                        ? q.options 
-                        : [q.answer, 'Pilihan B', 'Pilihan C', 'Pilihan D'];
+                <div className="overflow-x-auto max-h-[48vh] sm:max-h-[52vh] overflow-y-auto scrollbar-thin">
+                  <table className="w-full text-left border-collapse min-w-[650px]">
+                    <thead className="sticky top-0 z-10 bg-slate-900/95 backdrop-blur-md text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800 shadow-sm">
+                      <tr>
+                        <th className="py-3 px-3 w-12 text-center bg-slate-900">No</th>
+                        <th className="py-3 px-4 bg-slate-900">Pertanyaan</th>
+                        <th className="py-3 px-4 bg-slate-900">Kunci Jawaban</th>
+                        <th className="py-3 px-4 bg-slate-900">Pilihan Ganda (4 Lebah)</th>
+                        <th className="py-3 px-4 text-center w-28 bg-slate-900">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/80 text-sm">
+                      {questions
+                        .filter(q => {
+                          if (!searchQuery.trim()) return true;
+                          const query = searchQuery.toLowerCase();
+                          return q.question.toLowerCase().includes(query) ||
+                            q.answer.toLowerCase().includes(query) ||
+                            q.options?.some(opt => opt.toLowerCase().includes(query));
+                        })
+                        .map((q, idx) => {
+                          const isEditing = editingId === q.id;
+                          const opts = q.options && q.options.length >= 4 
+                            ? q.options 
+                            : [q.answer, 'Pilihan B', 'Pilihan C', 'Pilihan D'];
 
-                      return (
-                        <tr key={q.id} className="hover:bg-slate-800/40 transition-colors">
-                          <td className="py-3 px-3 text-center text-slate-500 font-mono text-xs">
-                            {idx + 1}
-                          </td>
+                          return (
+                            <tr key={q.id} className="hover:bg-slate-800/40 transition-colors">
+                              <td className="py-3 px-3 text-center text-slate-500 font-mono text-xs">
+                                {idx + 1}
+                              </td>
 
-                          {/* Question text */}
-                          <td className="py-3 px-4 font-bold text-white">
-                            {isEditing ? (
-                              <input
-                                type="text"
-                                value={editQuestionText}
-                                onChange={(e) => setEditQuestionText(e.target.value)}
-                                className="w-full bg-slate-900 border border-amber-400 rounded-lg px-2.5 py-1 text-sm text-white focus:outline-none"
-                                autoFocus
-                              />
-                            ) : (
-                              <span>{q.question}</span>
-                            )}
-                          </td>
+                              {/* Question text */}
+                              <td className="py-3 px-4 font-bold text-white">
+                                {isEditing ? (
+                                  <input
+                                    type="text"
+                                    value={editQuestionText}
+                                    onChange={(e) => setEditQuestionText(e.target.value)}
+                                    className="w-full bg-slate-900 border border-amber-400 rounded-lg px-2.5 py-1 text-sm text-white focus:outline-none"
+                                    autoFocus
+                                  />
+                                ) : (
+                                  <span>{q.question}</span>
+                                )}
+                              </td>
 
-                          {/* Answer text */}
-                          <td className="py-3 px-4">
-                            {isEditing ? (
-                              <input
-                                type="text"
-                                value={editAnswerText}
-                                onChange={(e) => setEditAnswerText(e.target.value)}
-                                className="w-full bg-slate-900 border border-emerald-400 rounded-lg px-2.5 py-1 text-sm text-emerald-300 font-bold focus:outline-none"
-                              />
-                            ) : (
-                              <span className="inline-block bg-emerald-400/10 text-emerald-300 font-mono font-bold px-3 py-1 rounded-lg border border-emerald-400/30">
-                                ⭐ {q.answer}
-                              </span>
-                            )}
-                          </td>
-
-                          {/* Options display / edit */}
-                          <td className="py-3 px-4">
-                            {isEditing ? (
-                              <div className="grid grid-cols-2 gap-1.5 text-xs">
-                                <input
-                                  type="text"
-                                  placeholder="Pilihan A"
-                                  value={editOptA}
-                                  onChange={(e) => setEditOptA(e.target.value)}
-                                  className="bg-slate-900 border border-slate-700 rounded px-2 py-0.5 text-white"
-                                />
-                                <input
-                                  type="text"
-                                  placeholder="Pilihan B"
-                                  value={editOptB}
-                                  onChange={(e) => setEditOptB(e.target.value)}
-                                  className="bg-slate-900 border border-slate-700 rounded px-2 py-0.5 text-white"
-                                />
-                                <input
-                                  type="text"
-                                  placeholder="Pilihan C"
-                                  value={editOptC}
-                                  onChange={(e) => setEditOptC(e.target.value)}
-                                  className="bg-slate-900 border border-slate-700 rounded px-2 py-0.5 text-white"
-                                />
-                                <input
-                                  type="text"
-                                  placeholder="Pilihan D"
-                                  value={editOptD}
-                                  onChange={(e) => setEditOptD(e.target.value)}
-                                  className="bg-slate-900 border border-slate-700 rounded px-2 py-0.5 text-white"
-                                />
-                              </div>
-                            ) : (
-                              <div className="flex flex-wrap gap-1.5">
-                                {opts.map((opt, oIdx) => (
-                                  <span
-                                    key={oIdx}
-                                    className={`text-[11px] font-mono px-2 py-0.5 rounded-md border ${
-                                      opt === q.answer
-                                        ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/50 font-bold'
-                                        : 'bg-slate-800 text-slate-300 border-slate-700'
-                                    }`}
-                                  >
-                                    {String.fromCharCode(65 + oIdx)}. {opt}
+                              {/* Answer text */}
+                              <td className="py-3 px-4">
+                                {isEditing ? (
+                                  <input
+                                    type="text"
+                                    value={editAnswerText}
+                                    onChange={(e) => setEditAnswerText(e.target.value)}
+                                    className="w-full bg-slate-900 border border-emerald-400 rounded-lg px-2.5 py-1 text-sm text-emerald-300 font-bold focus:outline-none"
+                                  />
+                                ) : (
+                                  <span className="inline-block bg-emerald-400/10 text-emerald-300 font-mono font-bold px-3 py-1 rounded-lg border border-emerald-400/30">
+                                    ⭐ {q.answer}
                                   </span>
-                                ))}
-                              </div>
-                            )}
-                          </td>
+                                )}
+                              </td>
 
-                          {/* Actions */}
-                          <td className="py-3 px-4 text-center">
-                            {isEditing ? (
-                              <div className="flex items-center justify-center gap-1.5">
-                                <button
-                                  onClick={() => handleSaveEdit(q.id)}
-                                  className="p-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg active:scale-95"
-                                  title="Simpan"
-                                >
-                                  <Check className="w-4 h-4" />
-                                </button>
-                                <button
-                                  onClick={() => setEditingId(null)}
-                                  className="p-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg active:scale-95"
-                                  title="Batal"
-                                >
-                                  <X className="w-4 h-4" />
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="flex items-center justify-center gap-1.5">
-                                <button
-                                  onClick={() => handleStartEdit(q)}
-                                  className="p-1.5 bg-slate-800 hover:bg-amber-500/20 text-slate-300 hover:text-amber-300 rounded-lg border border-slate-700 hover:border-amber-400/50 transition-colors"
-                                  title="Edit Soal & Pilihan"
-                                >
-                                  <Edit3 className="w-3.5 h-3.5" />
-                                </button>
-                                <button
-                                  onClick={() => handleDeleteQuestion(q.id)}
-                                  className="p-1.5 bg-slate-800 hover:bg-rose-500/20 text-slate-300 hover:text-rose-400 rounded-lg border border-slate-700 hover:border-rose-500/50 transition-colors"
-                                  title="Hapus Soal"
-                                >
-                                  <Trash2 className="w-3.5 h-3.5" />
-                                </button>
-                              </div>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                              {/* Options display / edit */}
+                              <td className="py-3 px-4">
+                                {isEditing ? (
+                                  <div className="grid grid-cols-2 gap-1.5 text-xs">
+                                    <input
+                                      type="text"
+                                      placeholder="Pilihan A"
+                                      value={editOptA}
+                                      onChange={(e) => setEditOptA(e.target.value)}
+                                      className="bg-slate-900 border border-slate-700 rounded px-2 py-0.5 text-white"
+                                    />
+                                    <input
+                                      type="text"
+                                      placeholder="Pilihan B"
+                                      value={editOptB}
+                                      onChange={(e) => setEditOptB(e.target.value)}
+                                      className="bg-slate-900 border border-slate-700 rounded px-2 py-0.5 text-white"
+                                    />
+                                    <input
+                                      type="text"
+                                      placeholder="Pilihan C"
+                                      value={editOptC}
+                                      onChange={(e) => setEditOptC(e.target.value)}
+                                      className="bg-slate-900 border border-slate-700 rounded px-2 py-0.5 text-white"
+                                    />
+                                    <input
+                                      type="text"
+                                      placeholder="Pilihan D"
+                                      value={editOptD}
+                                      onChange={(e) => setEditOptD(e.target.value)}
+                                      className="bg-slate-900 border border-slate-700 rounded px-2 py-0.5 text-white"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="flex flex-wrap gap-1.5">
+                                    {opts.map((opt, oIdx) => (
+                                      <span
+                                        key={oIdx}
+                                        className={`text-[11px] font-mono px-2 py-0.5 rounded-md border ${
+                                          opt === q.answer
+                                            ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/50 font-bold'
+                                            : 'bg-slate-800 text-slate-300 border-slate-700'
+                                        }`}
+                                      >
+                                        {String.fromCharCode(65 + oIdx)}. {opt}
+                                      </span>
+                                    ))}
+                                  </div>
+                                )}
+                              </td>
+
+                              {/* Actions */}
+                              <td className="py-3 px-4 text-center">
+                                {isEditing ? (
+                                  <div className="flex items-center justify-center gap-1.5">
+                                    <button
+                                      onClick={() => handleSaveEdit(q.id)}
+                                      className="p-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg active:scale-95"
+                                      title="Simpan"
+                                    >
+                                      <Check className="w-4 h-4" />
+                                    </button>
+                                    <button
+                                      onClick={() => setEditingId(null)}
+                                      className="p-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg active:scale-95"
+                                      title="Batal"
+                                    >
+                                      <X className="w-4 h-4" />
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center justify-center gap-1.5">
+                                    <button
+                                      onClick={() => handleStartEdit(q)}
+                                      className="p-1.5 bg-slate-800 hover:bg-amber-500/20 text-slate-300 hover:text-amber-300 rounded-lg border border-slate-700 hover:border-amber-400/50 transition-colors"
+                                      title="Edit Soal & Pilihan"
+                                    >
+                                      <Edit3 className="w-3.5 h-3.5" />
+                                    </button>
+                                    <button
+                                      onClick={() => handleDeleteQuestion(q.id)}
+                                      className="p-1.5 bg-slate-800 hover:bg-rose-500/20 text-slate-300 hover:text-rose-400 rounded-lg border border-slate-700 hover:border-rose-500/50 transition-colors"
+                                      title="Hapus Soal"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
+                                  </div>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               {/* Reset to 5 default questions */}
@@ -936,8 +992,8 @@ export const QuestionManagerModal: React.FC<QuestionManagerModalProps> = ({
 
         </div>
 
-        {/* Modal Footer */}
-        <div className="border-t border-slate-800 bg-slate-950 px-6 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
+        {/* Modal Footer (Fixed, Never Shrinks) */}
+        <div className="shrink-0 border-t border-slate-800 bg-slate-950 px-5 sm:px-6 py-3 sm:py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 z-20">
           <div className="text-xs text-slate-400 text-center sm:text-left">
             <div>Total Soal: <b className="text-amber-400">{questions.length}</b> • Skor: <b className="text-emerald-400">+{settings.scoreCorrect} / -{settings.scoreWrong}</b></div>
             <div className="text-[11px] text-amber-400/80 font-bold mt-0.5">Dibuat oleh : M. Nur Ali Abidin, S.Pd.</div>
