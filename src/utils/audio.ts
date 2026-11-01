@@ -32,6 +32,37 @@ class SoundController {
   }
 
   /**
+   * Wheel tick sound for spinning wheel
+   */
+  public playTick(pitchMultiplier: number = 1) {
+    if (this.isMuted) return;
+    const ctx = this.getContext();
+    if (!ctx) return;
+
+    try {
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'triangle';
+      const baseFreq = 520 * Math.max(0.6, Math.min(1.8, pitchMultiplier));
+      osc.frequency.setValueAtTime(baseFreq, now);
+      osc.frequency.exponentialRampToValueAtTime(140, now + 0.035);
+
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.035);
+    } catch {
+      // Ignore
+    }
+  }
+
+  /**
    * Hover nectar bubble tick sound
    */
   public playHover() {

@@ -34,6 +34,7 @@ import { QuestionManagerModal } from './components/QuestionManagerModal';
 import { HowToPlayModal } from './components/HowToPlayModal';
 import { ScoreBoard } from './components/ScoreBoard';
 import { ActivationModal } from './components/ActivationModal';
+import { RandomNamePickerModal } from './components/RandomNamePickerModal';
 
 const FULL_VERSION_CODE = 'TGLBH';
 const ACTIVATED_STORAGE_KEY = 'game_ar_lebah_activated_v5';
@@ -100,6 +101,7 @@ export default function App() {
   // Modals
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isHowToOpen, setIsHowToOpen] = useState(false);
+  const [isRandomPickerOpen, setIsRandomPickerOpen] = useState(false);
 
   // License & Activation States
   const [isActivated, setIsActivated] = useState<boolean>(() => {
@@ -1168,8 +1170,8 @@ export default function App() {
 
           {/* Menu Buttons Grid */}
           {licenseMode === 'demo' ? (
-            /* DEMO MODE: ONLY 1 PLAYER MENU IS DISPLAYED, OTHERS HIDDEN */
-            <div className="flex flex-col gap-4 max-w-lg w-full">
+            /* DEMO MODE: 1 PLAYER & RODA PUTAR DISPLAYED */
+            <div className="flex flex-col gap-3.5 max-w-lg w-full">
               {/* 1. Solo Player */}
               <button
                 onClick={() => startGame('solo', 'camera')}
@@ -1187,6 +1189,28 @@ export default function App() {
                   </div>
                 </div>
                 <Play className="w-6 h-6 fill-white" />
+              </button>
+
+              {/* 2. Pilih Nama Acak (Roda Putar) */}
+              <button
+                onClick={() => setIsRandomPickerOpen(true)}
+                className="group bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black py-4 px-6 rounded-2xl text-xl shadow-[0_6px_0_#b45309] active:shadow-none active:translate-y-1.5 transition-all flex items-center justify-between font-heading"
+              >
+                <div className="flex items-center gap-3 text-left">
+                  <div className="w-12 h-12 rounded-xl bg-slate-950/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    🎡
+                  </div>
+                  <div>
+                    <div className="text-xl flex items-center gap-2">
+                      <span>Pilih Nama Acak</span>
+                      <span className="bg-slate-950 text-amber-300 text-[10px] px-2 py-0.5 rounded-full font-sans font-bold">Roda Putar ✨</span>
+                    </div>
+                    <div className="text-xs font-extrabold text-slate-900 flex items-center gap-1">
+                      <Sparkles className="w-3.5 h-3.5" /> Undi nama siswa atau kelompok giliran kelas
+                    </div>
+                  </div>
+                </div>
+                <Play className="w-6 h-6 fill-slate-950 text-slate-950" />
               </button>
 
               {/* Locked Features Banner in Demo */}
@@ -1207,7 +1231,7 @@ export default function App() {
               </div>
             </div>
           ) : (
-            /* FULL VERSION: ALL 4 MENUS DISPLAYED */
+            /* FULL VERSION: ALL MENUS DISPLAYED */
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl w-full">
               
               {/* 1. Solo Player */}
@@ -1286,11 +1310,40 @@ export default function App() {
                 <Settings className="w-6 h-6" />
               </button>
 
+              {/* 5. HERO FEATURE: Pilih Nama Acak (Roda Putar) Spans 2 Columns */}
+              <button
+                onClick={() => setIsRandomPickerOpen(true)}
+                className="sm:col-span-2 group bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black py-4 px-6 rounded-2xl text-xl shadow-[0_6px_0_#b45309] active:shadow-none active:translate-y-1.5 transition-all flex items-center justify-between font-heading"
+              >
+                <div className="flex items-center gap-3 text-left">
+                  <div className="w-12 h-12 rounded-xl bg-slate-950/20 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                    🎡
+                  </div>
+                  <div>
+                    <div className="text-xl text-slate-950 flex items-center gap-2">
+                      <span>Pilih Nama Acak (Roda Putar)</span>
+                      <span className="bg-slate-950 text-amber-300 text-[11px] px-2.5 py-0.5 rounded-full font-sans font-bold">Baru ✨</span>
+                    </div>
+                    <div className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5" /> Undi nama siswa atau kelompok dengan roda putar interaktif
+                    </div>
+                  </div>
+                </div>
+                <Play className="w-6 h-6 fill-slate-950 text-slate-950" />
+              </button>
+
             </div>
           )}
 
           {/* Secondary Options */}
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 mt-6">
+            <button
+              onClick={() => setIsRandomPickerOpen(true)}
+              className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 border border-amber-400/40 transition-colors"
+            >
+              🎡 Roda Putar Acak
+            </button>
+
             <button
               onClick={() => setIsHowToOpen(true)}
               className="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold px-4 py-2.5 rounded-xl text-sm flex items-center gap-2 border border-slate-700 transition-colors"
@@ -1385,6 +1438,12 @@ export default function App() {
         onEnterDemo={handleEnterDemo}
         canClose={hasEnteredApp}
         onClose={() => setIsActivationModalOpen(false)}
+      />
+
+      {/* RANDOM NAME PICKER MODAL (RODA PUTAR NAMA SISWA / KELOMPOK) */}
+      <RandomNamePickerModal
+        isOpen={isRandomPickerOpen}
+        onClose={() => setIsRandomPickerOpen(false)}
       />
 
     </div>
